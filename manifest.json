@@ -1,0 +1,26 @@
+{
+  "name": "Magnifier Extension",
+  "version": "1.0",
+  "description": "Magnify the area pointed by your mouse pointer",
+  "browser_action": {
+    "default_title": "magnifier",
+    "default_icon": "Search-32.png",
+   "popup": "popup.html"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "http://*/",
+        "http://*/*"
+      ],
+      "js": [
+        "jquery.js", 
+        "content.js"
+      ]
+    }
+  ],
+  "background_page": "background.html",
+  "permissions": [
+    "tabs"
+  ]
+}

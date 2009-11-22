@@ -1,0 +1,52 @@
+<style>
+  #container {
+    width:200px;
+    height:200px;
+    overflow:hidden;
+    position:relative;
+    border: 1px solid black;
+  }
+  #magnifier {
+    position:absolute;
+  }
+</style>
+<script>
+  var port = null;
+  var rate = 3;
+
+  window.onload = function() {
+    var img = document.getElementById('magnifier');
+    chrome.windows.getCurrent(function(win) {
+      img.setAttribute('width', (win.width - 30) * rate);
+      img.setAttribute('height', (win.height - 100) * rate);
+    });
+    chrome.tabs.captureVisibleTab(null, function(dataUrl) {
+      img.src = dataUrl;
+      img.style.left = '0px';
+      img.style.top = '0px';
+    });
+
+    port = chrome.extension.connect({"name": "popup"});
+    port.onMessage.addListener(function(msg) {
+      receiveResponse(msg.position);
+    });
+    sendRequest();
+  };
+
+  function sendRequest() {
+    port.postMessage({from:'popup'});
+  }
+
+  function receiveResponse(position) {
+    if (position && position[0] && position[1]) {
+      var img = document.getElementById('magnifier');
+      img.style.left = '-' + (position[0] * rate) + 'px';
+      img.style.top = '-' + (position[1] * rate) + 'px';
+    }
+    //window.setTimeout(sendRequest, 100);
+    window.setTimeout(sendRequest, 300);
+  }
+</script>
+<div id="container">
+  <img id="magnifier" />
+</div>

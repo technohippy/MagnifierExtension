@@ -1,0 +1,18 @@
+<html>
+  <script>
+    window.mousePosition = [];
+    chrome.extension.onConnect.addListener(function(port) {
+      if (port.name == 'content') {
+        port.onMessage.addListener(function(msg) {
+          window.mousePosition = [msg.position[0], msg.position[1]];
+        });
+      }
+      else if (port.name == 'popup') {
+        port.onMessage.addListener(function(msg) {
+          port.postMessage({position: window.mousePosition});
+        });
+      }
+    });
+  </script>
+  <body />
+</html>
