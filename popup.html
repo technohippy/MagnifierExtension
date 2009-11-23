@@ -25,10 +25,14 @@
       img.style.left = '0px';
       img.style.top = '0px';
     });
-
     chrome.extension.onConnect.addListener(function(port) {
       port.onMessage.addListener(function(msg) {
-        receiveResponse(msg.position);
+        if (msg.type == 'pointer') {
+          clip(msg.position);
+        }
+        else if (msg.type == 'wheel') {
+          capture();
+        }
       });
     });
     chrome.tabs.executeScript(null,{
@@ -36,13 +40,22 @@
     });
   };
 
-  function receiveResponse(position) {
+  function clip(position) {
     if (position && position[0] && position[1]) {
       var img = document.getElementById('magnifier');
       img.style.left = '-' + (position[0] * rate) + 'px';
       img.style.top = '-' + (position[1] * rate) + 'px';
     }
-  }
+  };
+
+  function capture() {
+    window.setTimeout(function() {
+      chrome.tabs.captureVisibleTab(null, function(dataUrl) {
+        var img = document.getElementById('magnifier');
+        img.src = dataUrl;
+      });
+    }, 100);
+  };
 </script>
 <div id="container">
   <img id="magnifier" />

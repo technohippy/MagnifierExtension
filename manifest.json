@@ -16,11 +16,10 @@
   "content_scripts": [
     {
       "matches": [
-        "http://*/",
-        "http://*/*"
+        "http://*/*",
+        "https://*/*"
       ],
       "js": [
-        "jquery.js", 
         "content.js"
       ]
     }
