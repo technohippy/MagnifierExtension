@@ -12,14 +12,14 @@
 </style>
 <script>
   var port = null;
-  var rate = 3;
+  var scale = 3;
   var offset = 100;
 
   window.onload = function() {
     var img = document.getElementById('magnifier');
     chrome.windows.getCurrent(function(win) {
-      img.setAttribute('width', (win.width - 30) * rate);
-      img.setAttribute('height', (win.height - 100) * rate);
+      img.setAttribute('width', (win.width - 30) * scale);
+      img.setAttribute('height', (win.height - 100) * scale);
     });
     chrome.tabs.captureVisibleTab(null, function(dataUrl) {
       img.src = dataUrl;
@@ -44,8 +44,8 @@
   function clip(position) {
     if (position && position[0] && position[1]) {
       var img = document.getElementById('magnifier');
-      img.style.left = '-' + (position[0] * rate - offset) + 'px';
-      img.style.top = '-' + (position[1] * rate - offset) + 'px';
+      img.style.left = '-' + (position[0] * scale - offset) + 'px';
+      img.style.top = '-' + (position[1] * scale - offset) + 'px';
     }
   };
 
