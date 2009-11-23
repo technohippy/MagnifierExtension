@@ -26,16 +26,15 @@
       img.style.top = '0px';
     });
 
-    port = chrome.extension.connect({"name": "popup"});
-    port.onMessage.addListener(function(msg) {
-      receiveResponse(msg.position);
+    chrome.extension.onConnect.addListener(function(port) {
+      port.onMessage.addListener(function(msg) {
+        receiveResponse(msg.position);
+      });
     });
-    sendRequest();
+    chrome.tabs.executeScript(null,{
+      file:'content.js'
+    });
   };
-
-  function sendRequest() {
-    port.postMessage({from:'popup'});
-  }
 
   function receiveResponse(position) {
     if (position && position[0] && position[1]) {
@@ -43,8 +42,6 @@
       img.style.left = '-' + (position[0] * rate) + 'px';
       img.style.top = '-' + (position[1] * rate) + 'px';
     }
-    //window.setTimeout(sendRequest, 100);
-    window.setTimeout(sendRequest, 300);
   }
 </script>
 <div id="container">

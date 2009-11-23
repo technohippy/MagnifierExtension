@@ -7,6 +7,12 @@
     "default_icon": "Search-32.png",
    "popup": "popup.html"
   },
+  "icons": {
+    "128": "Search-128.png",
+    "16": "Search-32.png",
+    "32": "Search-32.png",
+    "64": "Search-64.png"
+  },
   "content_scripts": [
     {
       "matches": [
@@ -19,8 +25,9 @@
       ]
     }
   ],
-  "background_page": "background.html",
   "permissions": [
-    "tabs"
+    "tabs",
+    "http://*/*",
+    "https://*/*"
   ]
 }
