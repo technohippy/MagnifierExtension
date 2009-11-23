@@ -13,6 +13,7 @@
 <script>
   var port = null;
   var rate = 3;
+  var offset = 100;
 
   window.onload = function() {
     var img = document.getElementById('magnifier');
@@ -22,8 +23,8 @@
     });
     chrome.tabs.captureVisibleTab(null, function(dataUrl) {
       img.src = dataUrl;
-      img.style.left = '0px';
-      img.style.top = '0px';
+      img.style.left = offset + 'px';
+      img.style.top = offset + 'px';
     });
     chrome.extension.onConnect.addListener(function(port) {
       port.onMessage.addListener(function(msg) {
@@ -43,8 +44,8 @@
   function clip(position) {
     if (position && position[0] && position[1]) {
       var img = document.getElementById('magnifier');
-      img.style.left = '-' + (position[0] * rate) + 'px';
-      img.style.top = '-' + (position[1] * rate) + 'px';
+      img.style.left = '-' + (position[0] * rate - offset) + 'px';
+      img.style.top = '-' + (position[1] * rate - offset) + 'px';
     }
   };
 
@@ -54,7 +55,7 @@
         var img = document.getElementById('magnifier');
         img.src = dataUrl;
       });
-    }, 100);
+    }, 300);
   };
 </script>
 <div id="container">
